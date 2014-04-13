@@ -219,8 +219,9 @@ func Pad(dst ByteDst, src ByteSrc, otp ByteSrc, forward bool) {
 		if !ok {
 			break
 		}
+		oldc := c
 		if c, ok = back[c]; !ok {
-			panic("Pad src contains invalid characters")
+			panic(fmt.Sprint("src contains invalid character: ", oldc))
 		}
 
 		// Find next pad byte to use
@@ -399,4 +400,5 @@ var chars = [...]byte{
 	'{',
 	'}',
 	'|',
+	' ',
 }
