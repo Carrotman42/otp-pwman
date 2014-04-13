@@ -78,7 +78,12 @@ func getPasswd() {
 func newPasswd() {
 	ClearScreen()
 	wr("Make new password\n")
-	key := ins("Name of password: ")
+	
+t:	key := ins("Name of password: ")
+	if in := validate(key); in != "" {
+		wr("You used an invalid character in your name: ", in)
+		goto t
+	}
 	strlen := ins("Password length: ")
 	ig := in("Characters to not include: ")
 	

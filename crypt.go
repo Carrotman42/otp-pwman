@@ -305,6 +305,19 @@ func init() {
 	}
 }
 
+func validate(d string) string {
+	for _,v := range d {
+		if v > 255 {
+			return string([]rune{v})
+		}
+		v := byte(v)
+		if _, ok := back[v]; !ok {
+			return string([]byte{v})
+		}
+	}
+	return ""
+}
+
 var chars = [...]byte{
 	'a',
 	'b',
