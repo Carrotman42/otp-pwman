@@ -8,9 +8,25 @@ import (
 	"crypto/sha256"
 	"code.google.com/p/go.crypto/pbkdf2"
 	"crypto/rand"
+	"bytes"
 )
 
 const HumanReadOutput = true
+// Any key/pass longer than this will not be protected by the padding
+const PadTo = 100
+
+func unpad(in []byte) []byte {
+	if ind := bytes.IndexByte(in, 0); ind != -1 {
+		return in[:ind]
+	}
+	return in
+}
+func strpad(in string) []byte {
+	// TODO: Padding with 0s should be safe, but I suppose it could be better to pad with random data
+	ret := make([]byte, PadTo)
+	copy(ret, in)
+	return ret
+}
 
 // Sources of entropy
 var books = [OtpLen]string{
@@ -64,6 +80,8 @@ func (p *PasswordStore) Load(pass, salt []byte, src ByteSrc) {
 		}
 		Pad(val.Append, splitter, otp, false)
 
+		// Unpad both and stringify them to store them.
+		key, val = unpad(key), unpad(val)
 		t[string(key)] = string(val)
 	}
 }
@@ -83,11 +101,17 @@ func getOtp(pass, salt []byte) ByteSrc {
 func (p PasswordStore) Store(pass, salt []byte, dst ByteDst) {
 	otp := getOtp(pass, salt)
 	for k, v := range p {
-		Pad(dst, StrSrc(k), otp, true)
+		// pad them so that keys/values are always the same length
+		Pad(dst, BSrc(strpad(k)), otp, true)
 		dst('\t')
-		Pad(dst, StrSrc(v), otp, true)
+		Pad(dst, BSrc(strpad(v)), otp, true)
 		dst('\n')
 	}
+}
+
+func BSrc(s []byte) ByteSrc {
+	ss := bbuf(s)
+	return ss.Read
 }
 
 func StrSrc(s string) ByteSrc {
@@ -113,6 +137,9 @@ func CalcHash(pass, salt []byte) *BitBuf {
 }
 
 func NewPass(l int, ignore []byte) string {
+	// Always ignore '\0' when making new passwords (it's used as the padding byte currently)
+	ignore = append(ignore, 0)
+	
 	ret := make([]byte, l)
 	src := ReaderToSrc(rand.Reader)
 	for i := range ret {
@@ -414,4 +441,5 @@ var chars = [...]byte{
 	'}',
 	'|',
 	' ',
+	0, // Only for padding, not valid for names or passwords.
 }
