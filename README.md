@@ -1,7 +1,12 @@
 otp-pwman
 =====
 
-Local password manager using a One-Time-Pad strategy for encryption
+Local password manager using a One-Time-Pad strategy for encryption.
+
+This repo is go-gettable:
+    go get github.com/Carrotman42/otp-pwman
+
+If you don't know what that means, see the file called INSTALLING for some instructions.
 
 Note: Due to clipboard support I current only support windows. It likely can ported to other
       platforms in a straightforward fashion.

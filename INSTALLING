@@ -1,0 +1,15 @@
+This program is written in Go, which can be downloaded from the official website: https://code.google.com/p/go/downloads/list . If you're on Windows, you should download the MSI since it will take care of fixing your path for you. If you're on Mac or another *nix, you compiling from source is the only advice I can give you since that's what I've always done on those platforms.
+
+The easiest way to get the program to work is to follow these steps:
+
+1. Create a new folder somewhere on your computer and navigate the command prompt/terminal to that directory
+2. Set your GOPATH to the current directory:
+   - In cmd: set GOPATH=%cd%
+   - In bash: export GOPATH=`pwd`
+3. Get/compile the program
+   - run the following command (without the backticks): `go get github.com/Carrotman42/otp-pwman`
+4. Copy the 'data' folder to the correct place
+   - Copy the directory "src/github.com/Carrotman42/otp-pwman/data" to "bin" (offset from that folder you made in step 1
+5. Run the program (found in bin)
+
+That's it! Please raise issues if the user interface is not clear enough. I'm going for simple yet effective, but I'd love to clarify any part of the application if people don't find it straightforward.
