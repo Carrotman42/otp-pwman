@@ -1,6 +1,8 @@
 otp-pwman
 =====
 
+I think there is at least one security issue in this project and should not be used for super secret things. But note that the issue can only be exploited if an attacker were able to obtain your pass.wd file.
+
 Local password manager using a One-Time-Pad strategy for encryption.
 
 This repo is go-gettable:
