@@ -137,12 +137,14 @@ func main() {
 		wr("\t0: Get existing password")
 		wr("\t1: Create new/overwrite existing password")
 		wr("\t2: List password names")
+		wr("\te: Exit")
 		wr("\tSave: Save to disk (permanent!)")
-		
+
 		switch ins("\nChoice: ") {
 			case "0": getPasswd()
 			case "1": newPasswd()
 			case "2": lstPasswd()
+			case "e": return
 			case "Save": Save(pass, salt)
 				pause("Saved")
 			default:
